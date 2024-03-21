@@ -1,0 +1,82 @@
+server:
+  port: 9099
+  ssl:
+    enabled : true
+    key-alias: local_ssl
+    key-store: classpath:local-ssl.p12
+    key-store-type: PKCS12
+    key-password: root123
+    key-store-password: root123  
+    
+    trust-store: classpath:local-ssl.p12
+    trust-store-password: root123
+    trust-store-type: PKCS12
+  
+spring:
+  application:
+    name: API-GATEWAY
+    
+    
+  cloud:
+    gateway:
+      routes:
+      - id: USER-SERVICE 
+        uri: lb://https://localhost:9000
+        predicates:
+          - Path=/user/**
+        filters:
+        - name: CircuitBreaker
+          args:
+            name: USER-SERVICE
+            fallbackuri: forward:/userservicedown
+          
+      - id: HOTEL-SERVICE
+        uri: lb://HOTEL-SERVICE
+        predicates:
+          - Path=/hotel/** 
+#         InOrder to have multiple url's --> predicates : - Path=/hotel/**,/staffs/**,/customer/** ... --> When we have multiple controllers in one service...
+          
+      - id: RATING-SERVICE
+        uri: lb://RATING-SERVICE
+        predicates:
+          - Path=/rating/**    
+        filters:
+        - name: CircuitBreaker
+          args:
+            name: RATING-SERVICE
+            fallbackuri: forward:/ratingservicedown
+          
+          
+eureka:
+  instance:
+    ip-address: true
+  client:
+    fetch-registry: true         # It has to register itself as client
+    register-with-eureka: true    #It has to fetch as client
+    service-url:
+      defaultZone : https://localhost:8761/eureka    #This service will use this url inorder to register with server...  
+      
+    tls:
+      enabled : true
+#      key-alias: local_ssl
+      key-store: classpath:local-ssl.p12
+      key-store-type: PKCS12
+      key-password: root123
+      key-store-password: root123  
+      trust-store: classpath:local-ssl.p12
+      trust-store-type: PKCS12
+      trust-store-password: root123
+      
+# Hystrix Configuration...:
+#    fallbackcmd:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 4000
+            
+#Actuator Configuration      
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: hystrix.stream

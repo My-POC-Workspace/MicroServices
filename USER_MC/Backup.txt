@@ -1,0 +1,4 @@
+List<Rating> findFirst = userRatings.stream().filter(e -> e.getUserId().equals(userId)).collect(Collectors.toList());
+			user.setRatings(findFirst);
+			findAll.add(user);	
+		}

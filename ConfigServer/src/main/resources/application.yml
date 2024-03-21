@@ -1,0 +1,13 @@
+server:
+  port: 8085
+  
+spring:
+  application:
+    name: CONFIG-SERVER
+    
+  cloud:
+    config:
+      server:
+        git:
+          uri:  https://github.com/Rahul08052001/Microservices-configurartion
+          clone-on-start: true  # it helps us to execute the query faster...  

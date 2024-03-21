@@ -1,0 +1,103 @@
+server:
+  port: 9001
+  http2:
+    enabled: true
+  ssl:
+    enabled : true
+    key-alias: local_ssl
+    key-store: classpath:local-ssl.p12
+    key-store-type: PKCS12
+    key-password: root123
+    key-store-password: root123  
+    
+    trust-store: classpath:local-ssl.p12
+    trust-store-password: root123
+    trust-store-type: PKCS12
+  
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_mc
+    username: root
+    password: I43_mummy
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: HOTEL-SERVICE
+    
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql : true
+        
+eureka:
+  instance:
+    ip-address: true
+  client:
+    fetch-registry: true         # It has to register itself as client
+    register-with-eureka: true    #It has to fetch as client
+    service-url:
+      defaultZone : https://localhost:8761/eureka    #This service will use this url inorder to register with server... 
+    tls:
+      enabled : true
+#      key-alias: local_ssl
+      key-store: classpath:local-ssl.p12
+      key-store-type: PKCS12
+      key-password: root123
+      key-store-password: root123  
+      trust-store: classpath:local-ssl.p12
+      trust-store-type: PKCS12
+      trust-store-password: root123
+
+
+feign:
+  httpclient:
+    disable-ssl-validation: true
+    enabled: false
+  okhttp:
+    enabled: false
+
+
+
+
+
+
+
+#server:
+#  port: 9001
+#spring:
+#  datasource:
+#    url: jdbc:postgresql://localhost:8080/Hotel_mc
+#    username: postgres 
+#    password: root
+##    Driver Class will automatically get detecated...
+#  application:
+#    name: HOTEL-SERVICE
+#    
+#  jpa:
+#    generate-ddl: true
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+##        dialect: org.hibernate.dialect.MySQL8Dialect
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        format_sql : true 
+#        jdbc:
+#          lob:
+#            non_contextual_creation: true
+#            
+#eureka:
+#  instance:
+#    ip-address: true
+#  client:
+#    fetch-registry: true         # It has to register itself as client
+#    register-with-eureka: true    #It has to fetch as client
+#    service-url:
+#      defaultZone : http://localhost:8761/eureka    #This service will use this url inorder to register with server... 
+
+      
+      
